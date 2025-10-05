@@ -1,4 +1,3 @@
-
 # Krono AI: Voice-First Time Management (WhatsApp & Web) 🌟
 
 ## Project Overview
@@ -11,23 +10,23 @@ It solves the problem of "open loops" — ideas, to-dos, and appointments mentio
 
 ## ✨ Key Features
 
-* **WhatsApp Bot Interface**
+- **WhatsApp Bot Interface**
 
-  * Voice-First Capture: Users send voice notes or text directly to the bot.
-  * LLM-Powered Triage: The Gemma 3 API intelligently determines if the message is a time-sensitive Event (e.g., "Schedule a call with Jane at 3 PM tomorrow") or a non-time-sensitive Task (e.g., "Remember to buy new headphones").
+  - Voice-First Capture: Users send voice notes or text directly to the bot.
+  - LLM-Powered Triage: The Gemma 3 API intelligently determines if the message is a time-sensitive Event (e.g., "Schedule a call with Jane at 3 PM tomorrow") or a non-time-sensitive Task (e.g., "Remember to buy new headphones").
 
-* **Google Calendar Integration**
+- **Google Calendar Integration**
 
-  * Automatically creates time-blocked events with the correct date, time, and title, ensuring high-priority items make it onto the schedule.
+  - Automatically creates time-blocked events with the correct date, time, and title, ensuring high-priority items make it onto the schedule.
 
-* **Web Platform & Task Manager**
+- **Web Platform & Task Manager**
 
-  * A modern web dashboard (built with Next.js and shadcn/ui) to visualize Open Loops (Tasks) managed by Appwrite.
-  * Allows users to review, prioritize, and manually assign dates to captured tasks.
+  - A modern web dashboard (built with Next.js and shadcn/ui) to visualize Open Loops (Tasks) managed by Appwrite.
+  - Allows users to review, prioritize, and manually assign dates to captured tasks.
 
-* **Persistence Layer**
+- **Persistence Layer**
 
-  * **Appwrite**: Used as the Backend-as-a-Service (BaaS) for storing non-calendar, persistent data like Tasks, User Profiles, and Settings.
+  - **Appwrite**: Used as the Backend-as-a-Service (BaaS) for storing non-calendar, persistent data like Tasks, User Profiles, and Settings.
 
 ---
 
