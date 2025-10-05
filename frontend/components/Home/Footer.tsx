@@ -71,21 +71,6 @@ const Footer = ({
               <p className="text-muted-foreground mb-6 max-w-sm leading-relaxed">
                 {tagline}
               </p>
-
-              {/* Newsletter signup */}
-              <div className="space-y-3">
-                <h4 className="text-sm font-semibold">Stay updated</h4>
-                <div className="flex gap-2 flex-wrap">
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
-                    className="flex-1 px-3 py-2 text-sm rounded-md border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                  />
-                  <button className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">
-                    Subscribe
-                  </button>
-                </div>
-              </div>
             </div>
 
             {/* Footer links */}
