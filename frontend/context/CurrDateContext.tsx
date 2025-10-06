@@ -26,24 +26,19 @@ export const CurrDateProvider: React.FC<{ children: ReactNode }> = ({
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
   const nextDate = (value: number | null) => {
-    if (value === null || value === undefined) {
-      value = 1;
-    }
+    const days = value ?? 1;
     setSelectedDate((prev) => {
       const newDate = new Date(prev);
-      newDate.setDate(newDate.getDate() + value);
+      newDate.setDate(newDate.getDate() + days);
       return newDate;
     });
   };
 
   const prevDate = (value: number | null) => {
-    if (value === null || value === undefined) {
-      value = 1;
-    }
-
+    const days = value ?? 1;
     setSelectedDate((prev) => {
       const newDate = new Date(prev);
-      newDate.setDate(newDate.getDate() - value);
+      newDate.setDate(newDate.getDate() - days);
       return newDate;
     });
   };

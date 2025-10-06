@@ -2,6 +2,7 @@
 import { useCurrDate } from "@/context/CurrDateContext";
 import { ArrowLeftCircle, ArrowRightCircle } from "lucide-react";
 import React, { useState, useEffect } from "react";
+import { addDays, set, subDays } from "date-fns";
 
 export const UserBar = () => {
   const { selectedDate, prevDate, nextDate, goToToday } = useCurrDate();
@@ -47,9 +48,21 @@ export const UserBar = () => {
 
   return (
     <div className=" sticky z-10 top-20 w-full h-10 border-b border-border flex items-center py-2 px-4 justify-between bg-muted">
-      <div className=" flex items-center gap-4">
-        <div className="  flex items-center w-28">
-          <span>{formatDate(selectedDate)}</span>
+      <div className=" flex items-center gap-3">
+        <div className="  flex items-center w-36 md:w-52">
+          {stepValue === 1 ? (
+            <span className="font-medium text-sm">
+              {formatDate(selectedDate)}
+            </span>
+          ) : (
+            <>
+              <span>
+                {formatDate(subDays(selectedDate, stepValue / 2 - 1))}
+              </span>
+              <span> - </span>
+              <span>{formatDate(addDays(selectedDate, stepValue / 2))}</span>
+            </>
+          )}
           <span className="text-xs text-muted-foreground ml-2">
             (±{stepValue} days)
           </span>
