@@ -1,9 +1,10 @@
+import { UserBar } from "@/components/Plan/UserBar";
 import React from "react";
 
 const PlanPage = () => {
   return (
     <div className=" pt-20 text-primary">
-      <p>PlanPage</p>
+      <UserBar />
     </div>
   );
 };

@@ -85,7 +85,7 @@ const Navbar = ({
   },
 }: Navbar1Props) => {
   return (
-    <section className="py-4 flex items-center justify-center bg-background/80 backdrop-blur-md border-b border-border/50 fixed w-full top-0 z-50 supports-[backdrop-filter]:bg-background/60">
+    <section className="py-4 flex items-center justify-center bg-background/80 backdrop-blur-md border-b border-border fixed w-full top-0 z-50 supports-[backdrop-filter]:bg-background/60 h-20">
       <div className="container">
         {/* Desktop Menu */}
         <nav className="hidden justify-between lg:flex">
