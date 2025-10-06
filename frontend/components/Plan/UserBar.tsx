@@ -3,7 +3,7 @@ import React from "react";
 
 export const UserBar = () => {
   return (
-    <div className=" w-full h-10 border-b border-border flex items-center px-4 justify-between">
+    <div className=" sticky z-10 top-20 w-full h-10 border-b border-border flex items-center py-2 px-4 justify-between bg-muted">
       <div className=" flex items-center gap-4">
         <div className="  flex items-center ">
           <span>29, Sep</span>
