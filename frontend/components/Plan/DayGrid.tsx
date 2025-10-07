@@ -1,4 +1,5 @@
 import React from "react";
+import PlanCard from "./PlanCard";
 
 const PlanGrid = ({ date }: { date: Date }) => {
   // Format the date to display day name and date
@@ -31,14 +32,29 @@ const PlanGrid = ({ date }: { date: Date }) => {
         <span className="font-medium text-sm">{formatDate(date)}</span>
       </div>
       <div className="flex-1">
-        {new Array(24).fill(0).map((_, index) => (
-          <div
-            key={index}
-            className={`h-10 w-full border-b border-border/30 ${
-              isToday(date) ? "bg-primary/10" : ""
-            }`}
-          ></div>
-        ))}
+        {new Array(24).fill(0).map((_, index) => {
+          if (index === 5 && date.getDate() % 2 === 0) {
+            return (
+              <div
+                key={index}
+                className={`h-10 w-full border-b border-border/30 ${
+                  isToday(date) ? "bg-primary/10" : ""
+                }`}
+              >
+                <PlanCard />
+              </div>
+            );
+          }
+
+          return (
+            <div
+              key={index}
+              className={`h-10 w-full border-b border-border/30 ${
+                isToday(date) ? "bg-primary/10" : ""
+              }`}
+            ></div>
+          );
+        })}
       </div>
     </div>
   );
