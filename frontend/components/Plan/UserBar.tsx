@@ -47,7 +47,7 @@ export const UserBar = () => {
   };
 
   return (
-    <div className=" sticky z-10 top-20 w-full h-10 border-b border-border flex items-center py-2 px-4 justify-between bg-muted">
+    <div className=" sticky z-20 top-20 w-full h-10 border-b border-border flex items-center py-2 px-4 justify-between bg-muted">
       <div className=" flex items-center gap-3">
         <div className="  flex items-center w-36 md:w-52">
           {stepValue === 1 ? (

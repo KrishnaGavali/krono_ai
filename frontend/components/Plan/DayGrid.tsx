@@ -25,7 +25,7 @@ const PlanGrid = ({ date }: { date: Date }) => {
   return (
     <div className="w-full flex flex-col border-r border-border/30">
       <div
-        className={`h-10 w-full border-b border-border sticky top-30 text-center flex flex-col justify-center z-10 bg-background ${
+        className={`h-10 w-full border-b border-border sticky top-30 text-center flex flex-col justify-center z-20 bg-background ${
           isToday(date) ? "bg-primary/30 backdrop-blur-lg" : ""
         }`}
       >
