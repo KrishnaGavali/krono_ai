@@ -1,13 +1,5 @@
 "use client";
-import {
-  Star,
-  MessageCircle,
-  Calendar,
-  Brain,
-  ArrowRight,
-  CheckCircle,
-  Mic,
-} from "lucide-react";
+import { Star, ArrowRight, CheckCircle, Mic } from "lucide-react";
 import React from "react";
 
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
