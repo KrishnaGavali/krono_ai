@@ -1,11 +1,5 @@
-import {
-  Calendar,
-  Menu,
-  DollarSign,
-  Play,
-  User,
-  ChevronDown,
-} from "lucide-react";
+"use client";
+import { Calendar, Menu, ChevronDown } from "lucide-react";
 
 import {
   Accordion,
@@ -30,13 +24,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { useState } from "react";
 
 interface MenuItem {
   title: string;
@@ -84,10 +72,12 @@ const Navbar = ({
     },
   },
 }: Navbar1Props) => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
     <section className="py-4 flex items-center justify-center bg-background/80 backdrop-blur-md border-b border-border fixed w-full top-0 z-50 supports-[backdrop-filter]:bg-background/60 h-20">
       <div className="container">
-        {/* Desktop Menu */}
+        {/* Desktop Navbar */}
         <nav className="hidden justify-between lg:flex">
           <div className="flex items-center gap-6">
             {/* Logo */}
@@ -108,6 +98,8 @@ const Navbar = ({
               </NavigationMenu>
             </div>
           </div>
+
+          {/* Theme + Auth */}
           <div className="flex items-center gap-3">
             <ThemeSwitcher />
             <DropdownMenu>
@@ -144,8 +136,8 @@ const Navbar = ({
           </div>
         </nav>
 
-        {/* Mobile Menu */}
-        <div className="block lg:hidden px-5">
+        {/* Mobile Navbar */}
+        <div className="block lg:hidden px-5 relative">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <a
@@ -157,81 +149,73 @@ const Navbar = ({
                 {logo.title}
               </span>
             </a>
+
+            {/* Mobile Controls */}
             <div className="flex items-center gap-2">
               <ThemeSwitcher />
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button variant="outline" size="icon">
-                    <Menu className="size-4" />
-                  </Button>
-                </SheetTrigger>
-                <SheetContent className="overflow-y-auto">
-                  <SheetHeader>
-                    <SheetTitle>
-                      <a
-                        href={logo.url}
-                        className="flex items-center gap-2 hover:opacity-80 transition-opacity"
-                      >
-                        <Calendar className="size-8 text-primary" />
-                        <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                          {logo.title}
-                        </span>
-                      </a>
-                    </SheetTitle>
-                  </SheetHeader>
-                  <div className="flex flex-col gap-6 p-4">
-                    <Accordion
-                      type="single"
-                      collapsible
-                      className="flex w-full flex-col gap-4"
-                    >
-                      {menu.map((item) => renderMobileMenuItem(item))}
-                    </Accordion>
-
-                    <div className="flex flex-col gap-3">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground gap-2 w-full justify-center">
-                            {auth.signup.title}
-                            <ChevronDown className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="center" className="w-56">
-                          <DropdownMenuItem asChild>
-                            <a
-                              href={auth.signup.loginUrl}
-                              className="flex items-center gap-2 cursor-pointer"
-                            >
-                              <GoogleIcon className="h-4 w-4" />
-                              Login with Google
-                            </a>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem asChild>
-                            <a
-                              href={auth.signup.signupUrl}
-                              className="flex items-center gap-2 cursor-pointer"
-                            >
-                              <GoogleIcon className="h-4 w-4" />
-                              Get Started with Google
-                            </a>
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
-                  </div>
-                </SheetContent>
-              </Sheet>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              >
+                <Menu className="size-4" />
+              </Button>
             </div>
           </div>
+
+          {/* Dropdown Menu (Top-down) */}
+          {isMobileMenuOpen && (
+            <div className="absolute left-0 right-0 mt-5.5 bg-background border border-border shadow-lg rounded-b-md p-4 flex flex-col gap-6 z-40">
+              <Accordion
+                type="single"
+                collapsible
+                className="flex w-full flex-col gap-4"
+              >
+                {menu.map((item) => renderMobileMenuItem(item))}
+              </Accordion>
+
+              <div className="flex flex-col gap-3">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button className="bg-primary hover:bg-primary/90 text-primary-foreground gap-2 w-full justify-center">
+                      {auth.signup.title}
+                      <ChevronDown className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="center" className="w-full">
+                    <DropdownMenuItem asChild className="w-full">
+                      <a
+                        href={auth.signup.loginUrl}
+                        className="flex items-center gap-2 cursor-pointer"
+                      >
+                        <GoogleIcon className="h-4 w-4" />
+                        Login with Google
+                      </a>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <a
+                        href={auth.signup.signupUrl}
+                        className="flex items-center gap-2 cursor-pointer"
+                      >
+                        <GoogleIcon className="h-4 w-4" />
+                        Get Started with Google
+                      </a>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </section>
   );
 };
 
+// ====== RENDER FUNCTIONS ======
+
 const renderMenuItem = (item: MenuItem) => {
   if (item.items) {
-    console.log("Item :", item.items);
     return (
       <NavigationMenuItem key={item.title}>
         <NavigationMenuTrigger>{item.title}</NavigationMenuTrigger>
@@ -250,7 +234,7 @@ const renderMenuItem = (item: MenuItem) => {
     <NavigationMenuItem key={item.title}>
       <NavigationMenuLink
         href={item.url}
-        className="bg-background hover:bg-accent-foreground hover:text-accent group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors"
+        className="group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors"
       >
         {item.title}
       </NavigationMenuLink>
@@ -262,7 +246,7 @@ const renderMobileMenuItem = (item: MenuItem) => {
   if (item.items) {
     return (
       <AccordionItem key={item.title} value={item.title} className="border-b-0">
-        <AccordionTrigger className="text-md py-0 font-semibold hover:no-underline">
+        <AccordionTrigger className="text-md py-0 hover:no-underline">
           {item.title}
         </AccordionTrigger>
         <AccordionContent className="mt-2">
@@ -275,7 +259,7 @@ const renderMobileMenuItem = (item: MenuItem) => {
   }
 
   return (
-    <a key={item.title} href={item.url} className="text-md font-semibold">
+    <a key={item.title} href={item.url} className="text-md">
       {item.title}
     </a>
   );
@@ -284,12 +268,12 @@ const renderMobileMenuItem = (item: MenuItem) => {
 const SubMenuLink = ({ item }: { item: MenuItem }) => {
   return (
     <a
-      className="hover:bg-muted hover:text-accent-foreground flex min-w-80 select-none flex-row gap-4 rounded-md p-3 leading-none no-underline outline-none transition-colors"
+      className="hover:text-primary flex min-w-80 select-none flex-row gap-4 rounded-md p-3 leading-none no-underline outline-none transition-colors"
       href={item.url}
     >
       <div className="text-foreground">{item.icon}</div>
       <div>
-        <div className="text-sm font-semibold">{item.title}</div>
+        <div className="text-sm ">{item.title}</div>
         {item.description && (
           <p className="text-muted-foreground text-sm leading-snug">
             {item.description}

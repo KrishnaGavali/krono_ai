@@ -1,4 +1,5 @@
 import { Feature } from "@/components/Home/Features";
+import Flow from "@/components/Home/Flow";
 import { Footer } from "@/components/Home/Footer";
 import { Hero } from "@/components/Home/Hero";
 import React from "react";

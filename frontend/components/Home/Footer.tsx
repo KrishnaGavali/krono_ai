@@ -63,7 +63,7 @@ const Footer = ({
                   className="flex items-center gap-2 hover:opacity-80 transition-opacity"
                 >
                   <Calendar className="size-8 text-primary" />
-                  <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                  <span className="text-xl font-bold tracking-tight text-primary">
                     {logo.title}
                   </span>
                 </a>

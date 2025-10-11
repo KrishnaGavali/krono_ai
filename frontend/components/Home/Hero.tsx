@@ -1,3 +1,4 @@
+"use client";
 import {
   Star,
   MessageCircle,
@@ -29,12 +30,14 @@ interface Hero7Props {
     }[];
   };
 }
+import { account } from "@/handlers/appwrite";
+import { OAuthProvider } from "appwrite";
 
 const Hero = ({
   heading = "Transform Voice Notes into Calendar Events in Seconds",
-  description = "Krono AI is the voice-first productivity platform that captures your ideas, tasks, and appointments from WhatsApp and automatically organizes them using AI-powered triage.",
+  description = "Krono AI is the voice-first productivity platform that captures your tasks, and appointments from WhatsApp and automatically organizes them using AI-powered triage.",
   button = {
-    text: "Start Free with Google",
+    text: "Create Account with Google",
     url: "#get-started",
   },
   reviews = {
@@ -64,13 +67,21 @@ const Hero = ({
     ],
   },
 }: Hero7Props) => {
+  const googleAuth = () => {
+    account.createOAuth2Session({
+      provider: OAuthProvider.Google,
+      success: "http://localhost:3000/auth/google/callback/success",
+      failure: "http://localhost:3000/auth/google/callback/failed",
+      scopes: [
+        "https://www.googleapis.com/auth/calendar",
+        "https://www.googleapis.com/auth/tasks",
+        "https://www.googleapis.com/auth/userinfo.email",
+        "https://www.googleapis.com/auth/userinfo.profile",
+      ],
+    });
+  };
   return (
     <section className="relative min-h-screen pt-26 flex items-center justify-center bg-gradient-to-br from-background via-background to-muted/20 overflow-hidden">
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-      <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent/10 rounded-full blur-3xl"></div>
-
       <div className="container relative z-10 px-4 sm:px-6 lg:px-8">
         <div className="text-center space-y-8">
           {/* Badge */}
@@ -96,9 +107,9 @@ const Hero = ({
             <Button
               asChild
               size="lg"
-              className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all duration-300"
             >
-              <a href={button.url} className="flex items-center gap-2">
+              <a onClick={googleAuth} className="flex items-center gap-2">
                 <GoogleIcon className="w-5 h-5" />
                 {button.text}
                 <ArrowRight className="w-5 h-5" />
@@ -107,7 +118,7 @@ const Hero = ({
             <Button
               variant="outline"
               size="lg"
-              className="px-8 py-6 text-lg hover:text-primary"
+              className="px-8 py-6 text-lg hover:text-white dark:hover:bg-accent dark:hover:text-background"
             >
               <Mic className="w-5 h-5 mr-2" />
               Watch Demo
