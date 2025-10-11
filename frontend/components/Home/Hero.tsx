@@ -62,8 +62,8 @@ const Hero = ({
   const googleAuth = () => {
     account.createOAuth2Session({
       provider: OAuthProvider.Google,
-      success: "/auth/google/callback/success",
-      failure: "/auth/google/callback/failed",
+      success: "https://kronoai.appwrite.network/auth/google/callback/success",
+      failure: "https://kronoai.appwrite.network/auth/google/callback/failed",
       scopes: [
         "https://www.googleapis.com/auth/calendar",
         "https://www.googleapis.com/auth/tasks",
