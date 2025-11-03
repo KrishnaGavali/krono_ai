@@ -102,37 +102,12 @@ const Navbar = ({
           {/* Theme + Auth */}
           <div className="flex items-center gap-3">
             <ThemeSwitcher />
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  size="sm"
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground gap-2"
-                >
-                  {auth.signup.title}
-                  <ChevronDown className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuItem asChild>
-                  <a
-                    href={auth.signup.loginUrl}
-                    className="flex items-center gap-2 cursor-pointer"
-                  >
-                    <GoogleIcon className="h-4 w-4" />
-                    Login with Google
-                  </a>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <a
-                    href={auth.signup.signupUrl}
-                    className="flex items-center gap-2 cursor-pointer"
-                  >
-                    <GoogleIcon className="h-4 w-4" />
-                    Get Started with Google
-                  </a>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Button variant={"default"}>
+              <div className=" flex items-center">
+                <GoogleIcon className="h-4 w-4 mr-2" />
+                Login with Google
+              </div>
+            </Button>
           </div>
         </nav>
 
@@ -175,34 +150,12 @@ const Navbar = ({
               </Accordion>
 
               <div className="flex flex-col gap-3">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button className="bg-primary hover:bg-primary/90 text-primary-foreground gap-2 w-full justify-center">
-                      {auth.signup.title}
-                      <ChevronDown className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="center" className="w-full">
-                    <DropdownMenuItem asChild className="w-full">
-                      <a
-                        href={auth.signup.loginUrl}
-                        className="flex items-center gap-2 cursor-pointer"
-                      >
-                        <GoogleIcon className="h-4 w-4" />
-                        Login with Google
-                      </a>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <a
-                        href={auth.signup.signupUrl}
-                        className="flex items-center gap-2 cursor-pointer"
-                      >
-                        <GoogleIcon className="h-4 w-4" />
-                        Get Started with Google
-                      </a>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                <Button variant={"default"}>
+                  <div className=" flex items-center">
+                    <GoogleIcon className="h-4 w-4 mr-2" />
+                    Login with Google
+                  </div>
+                </Button>
               </div>
             </div>
           )}
