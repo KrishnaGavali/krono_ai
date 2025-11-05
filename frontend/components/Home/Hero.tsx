@@ -22,11 +22,9 @@ interface Hero7Props {
     }[];
   };
 }
-import { account } from "@/handlers/appwrite";
-import { OAuthProvider } from "appwrite";
 
 const Hero = ({
-  heading = "Transform Voice Notes into Calendar Events in Seconds",
+  heading = "Chat with your Calendar Plan your Day.",
   description = "Krono AI is the voice-first productivity platform that captures your tasks, and appointments from WhatsApp and automatically organizes them using AI-powered triage.",
   button = {
     text: "Create Account with Google",
@@ -59,19 +57,10 @@ const Hero = ({
     ],
   },
 }: Hero7Props) => {
-  const googleAuth = () => {
-    account.createOAuth2Session({
-      provider: OAuthProvider.Google,
-      success: "https://kronoai.appwrite.network/auth/google/callback/success",
-      failure: "https://kronoai.appwrite.network/auth/google/callback/failed",
-      scopes: [
-        "https://www.googleapis.com/auth/calendar",
-        "https://www.googleapis.com/auth/tasks",
-        "https://www.googleapis.com/auth/userinfo.email",
-        "https://www.googleapis.com/auth/userinfo.profile",
-      ],
-    });
+  const googleLogin = async () => {
+    window.location.href = "http://localhost:3001/auth/google";
   };
+
   return (
     <section className="relative min-h-screen pt-26 flex items-center justify-center bg-gradient-to-br from-background via-background to-muted/20 overflow-hidden">
       <div className="container relative z-10 px-4 sm:px-6 lg:px-8">
@@ -84,8 +73,8 @@ const Hero = ({
 
           {/* Main heading */}
           <div className="space-y-6">
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight">
-              <span className="bg-gradient-to-r from-foreground via-foreground to-foreground/80 bg-clip-text text-transparent">
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight md:w-[680px] lg:w-[1000px] mx-auto">
+              <span className="bg-gradient-to-r from-foreground via-foreground to-primary/80 bg-clip-text text-transparent">
                 {heading}
               </span>
             </h1>
@@ -101,7 +90,7 @@ const Hero = ({
               size="lg"
               className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all duration-300"
             >
-              <a onClick={googleAuth} className="flex items-center gap-2">
+              <a onClick={googleLogin} className="flex items-center gap-2">
                 <GoogleIcon className="w-5 h-5" />
                 {button.text}
                 <ArrowRight className="w-5 h-5" />
