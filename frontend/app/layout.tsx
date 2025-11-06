@@ -3,7 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Layout/Navbar";
 import { ThemeProvider } from "@/components/providers/theme-provider";
-import { CurrDateProvider } from "@/context/CurrDateContext";
+
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en" className=" md:overflow-y-scroll" suppressHydrationWarning>
       <body className={`${poppins.className} antialiased`}>
-        <CurrDateProvider>
+        
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -33,7 +33,7 @@ export default function RootLayout({
             <Navbar />
             {children}
           </ThemeProvider>
-        </CurrDateProvider>
+        
       </body>
     </html>
   );

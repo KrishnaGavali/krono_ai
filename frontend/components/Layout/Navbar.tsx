@@ -1,5 +1,5 @@
 "use client";
-import { Calendar, Menu, ChevronDown } from "lucide-react";
+import { Calendar, Menu } from "lucide-react";
 
 import {
   Accordion,
@@ -10,12 +10,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { ThemeSwitcher } from "@/components/ui/theme-switcher";
 import { GoogleIcon } from "@/components/ui/google-icon";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -64,15 +58,13 @@ const Navbar = ({
     { title: "Pricing", url: "#pricing" },
     { title: "About Dev", url: "#about" },
   ],
-  auth = {
-    signup: {
-      title: "Get Started",
-      loginUrl: "#login-google",
-      signupUrl: "#signup-google",
-    },
-  },
 }: Navbar1Props) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const handleLogin = () => {
+    // Redirect to Google OAuth login
+    window.location.href = "http://localhost:3001/auth/google";
+  };
 
   return (
     <section className="py-4 flex items-center justify-center bg-background/80 backdrop-blur-md border-b border-border fixed w-full top-0 z-50 supports-[backdrop-filter]:bg-background/60 h-20">
@@ -103,7 +95,10 @@ const Navbar = ({
           <div className="flex items-center gap-3">
             <ThemeSwitcher />
             <Button variant={"default"}>
-              <div className=" flex items-center">
+              <div
+                className=" flex items-center hover:cursor-pointer"
+                onClick={handleLogin}
+              >
                 <GoogleIcon className="h-4 w-4 mr-2" />
                 Login with Google
               </div>
@@ -151,7 +146,10 @@ const Navbar = ({
 
               <div className="flex flex-col gap-3">
                 <Button variant={"default"}>
-                  <div className=" flex items-center">
+                  <div
+                    className=" flex items-center hover:cursor-pointer"
+                    onClick={handleLogin}
+                  >
                     <GoogleIcon className="h-4 w-4 mr-2" />
                     Login with Google
                   </div>

@@ -3,5 +3,5 @@ type serverConfigType = {
 };
 
 export const serverConfig: serverConfigType = {
-  env: import.meta.env.VITE_ENV as string,
+  env: (process.env.NEXT_PUBLIC_ENV ?? "DEV") as string,
 };

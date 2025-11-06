@@ -1,8 +1,9 @@
 import { Client } from "node-appwrite";
+import appwriteConfig from "../config/appwriteConfig.ts";
 
-const client = new Client();
+let appwriteClient = new Client()
+  .setEndpoint(appwriteConfig.endpoint) // Your API Endpoint
+  .setProject(appwriteConfig.projectId) // Your project ID
+  .setKey(appwriteConfig.apiKey); // Your secret API key
 
-client
-  .setEndpoint(process.env.APPWRITE_ENDPOINT as string) // Your API Endpoint
-  .setProject(process.env.APPWRITE_PROJECT_ID as string) // Your project ID
-  .setKey(process.env.APPWRITE_API_KEY as string); // Your secret API key
+export { appwriteClient };
