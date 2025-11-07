@@ -1,9 +1,9 @@
-import type { Request, Response } from "express";
 import oAuth2Client from "../handlers/googleAuth.ts";
 import { google } from "googleapis";
-import appwriteConfig, { appwriteIds } from "../config/appwriteConfig.ts";
+import { appwriteIds } from "../config/appwriteConfig.ts";
 import { Query, TablesDB } from "node-appwrite";
 import { appwriteClient } from "../handlers/appwrite.ts";
+import type { Request, Response } from "express";
 import type { UsersSchema } from "../schema/Users.ts";
 
 export const googleLogin = async (
