@@ -1,0 +1,57 @@
+project status : (until : 10/nov/2025)
+
+I am building kronoAI, my target is build this from 10/nov/2025 to target : 30/nov/2025, i want to build this project before i hit target
+
+
+but here the issue : from 10/nov/2025 to 21/nov/2025, I have exam , total of 6 exams and 6 days holiday between , so i have to manage exam + project until exam over , after that full focus on project till 30 dec, in dec, new project
+
+
+
+Project Info :
+
+# 🤖 Krono AI: The Conversational Triage Assistant
+
+Krono AI is a **Conversational AI Productivity Tool** designed to eliminate the cognitive burden and friction of manual task entry, especially for students managing chaotic group work. It transforms messy, unstructured communication into actionable, structured data. The project is an **EdTech** solution built to showcase expertise in full-stack AI orchestration and real-time database management.
+
+---
+
+### Key Workflow
+
+1.  **Messy Input:** A user sends a complex, conversational message (or voice note) via **WhatsApp** (or a simulation input for the MVP) containing multiple tasks, due dates, and contexts.
+2.  **AI Triage:** The input is immediately routed to the **Gemma 3 LLM**. The LLM's prompt is engineered to parse the raw text and return a structured **JSON** object, identifying the task, priority, owner, and due time.
+3.  **Data Persistence:** The structured JSON is saved to the **Appwrite** real-time database. Appwrite's backend efficiently manages the data schema, authentication, and user-specific task lists.
+4.  **Action & Display:** The frontend **Next.js** **Intelligent Dashboard** (or "Plan Page") uses an Appwrite Real-time Listener to instantly update. It shows a prioritized **"What's Important Now"** list and pushes final, clean events/tasks to the user's **Google Calendar**.
+
+---
+
+### ⚙️ Tech Stack & Integrations
+
+| Component | Technology | Purpose |
+| :--- | :--- | :--- |
+| **Frontend** | **Next.js** (React) | Provides the fast, responsive, and intelligent daily plan dashboard (the "Krono Lens"). |
+| **AI Engine** | **Gemma 3** | The core intelligence for **Natural Language Processing (NLP)** and Triage; converts conversation to JSON. |
+| **Backend/DB** | **Appwrite** | Handles Authentication, Real-time Database, and Appwrite Functions (cloud cron jobs for daily summaries). |
+| **Integrations** | **WhatsApp, Google Calendar** | Serves as the high-friction input channel (WhatsApp) and the reliable scheduling output (GCal). |
+
+Krono AI successfully demonstrates how to integrate modern LLMs into a full-stack, real-time application, turning conversational data chaos into clear, actionable productivity.
+
+
+
+Current Project Status :
+Landing Page ready
+Google Auth , Calendar Event creation is ready , but the issue was , it build using express, without vps i can't host it, so i am switching backend to appwrite functions, so i have to rebuild current backend status with appwrite functions
+
+
+
+
+Project Status :  (Here I will write the daily Progress)
+
+Until : 9/nov : Landing Page ready, Google Auth , Calendar Event creation is ready but in express, so i have to rebuild
+10/nov : (today)
+
+
+
+
+
+
+
