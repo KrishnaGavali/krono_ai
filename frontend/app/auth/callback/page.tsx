@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,7 +13,7 @@ interface AuthCallbackData {
   userEmail: string | null;
 }
 
-export default function AuthCallback() {
+function AuthCallbackContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [status, setStatus] = useState<"loading" | "success" | "error">(
@@ -225,5 +225,38 @@ export default function AuthCallback() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+// Loading fallback component
+function AuthCallbackLoading() {
+  return (
+    <div className="min-h-screen flex items-center justify-center px-4 py-8">
+      <Card className="w-full max-w-md">
+        <CardHeader className="text-center">
+          <CardTitle className="text-2xl">Authentication</CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-col items-center gap-6">
+          <Loader2 className="h-16 w-16 text-primary animate-spin" />
+          <div className="text-center space-y-2">
+            <p className="text-lg font-medium text-foreground">
+              Processing your authentication...
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Please wait while we verify your credentials.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+// Default export wrapped with Suspense
+export default function AuthCallback() {
+  return (
+    <Suspense fallback={<AuthCallbackLoading />}>
+      <AuthCallbackContent />
+    </Suspense>
   );
 }
