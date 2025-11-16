@@ -136,14 +136,77 @@
       "specification": "s-1vcpu-512mb",
       "execute": ["any"],
       "events": [],
-      "scopes": ["databases.read", "databases.write"],
+      "scopes": [
+        "databases.read",
+        "databases.write",
+        "users.read",
+        "users.write"
+      ],
       "schedule": "",
       "timeout": 15,
       "enabled": true,
       "logging": true,
       "entrypoint": "src/main.js",
       "commands": "npm install",
-      "path": "functions/Auth"
+      "path": "functions/Auth",
+      "envs": [
+        {
+          "key": "APPWRITE_API_KEY",
+          "value": "standard_94a5a3e0ae3ecdfc5de57d058782ea5c2e65474899767bf3719b16a1312d15f3adfa630832804119af260de1a09f3f0aee596203c3060c643ab2ce61a20b006ceab52ca56ca14258495074fd59f66261b38e25f302930edb1428439137ba9425db5ee78f75c4a893497a3e1d7077201c229a11615cd65e524549824364b87f69"
+        },
+        {
+          "key": "APPWRITE_ENDPOINT",
+          "value": "https://fra.cloud.appwrite.io/v1"
+        },
+        {
+          "key": "APPWRITE_FUNCTION_API_ENDPOINT",
+          "value": "https://fra.cloud.appwrite.io/v1"
+        },
+        {
+          "key": "APPWRITE_FUNCTION_PROJECT_ID",
+          "value": "68d9409a002dbc77e02b"
+        },
+        {
+          "key": "APPWRITE_DATABASE_ID",
+          "value": "690c01f40007359146fe"
+        },
+        {
+          "key": "APPWRITE_USER_TABLE_ID",
+          "value": "users"
+        },
+        {
+          "key": "GOOGLE_CLIENT_ID",
+          "value": "1083535204485-vv5f6lt6fo8innargem24oqvaam340aa.apps.googleusercontent.com"
+        },
+        {
+          "key": "GOOGLE_CLIENT_SECRET",
+          "value": "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"
+        },
+        {
+          "key": "GOOGLE_REDIRECT_URI",
+          "value": "http://localhost:3000/auth/google/callback"
+        },
+        {
+          "key": "JWT_SECRET",
+          "value": "KrishnaGavalis_KronoAI_Project"
+        },
+        {
+          "key": "JWT_EXPIRES_IN",
+          "value": "86400"
+        },
+        {
+          "key": "FRONTEND_CALLBACK_URL",
+          "value": "http://localhost:3001/auth/callback"
+        },
+        {
+          "key": "FRONTEND_ERROR_URL",
+          "value": "http://localhost:3001/auth/error"
+        },
+        {
+          "key": "NODE_ENV",
+          "value": "development"
+        }
+      ]
     }
   ]
 }
