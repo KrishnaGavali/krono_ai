@@ -5,12 +5,11 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 
 interface AuthCallbackData {
   authStatus: "login_success" | "signup_success" | null;
   userId: string | null;
-  userName: string | null;
-  userEmail: string | null;
 }
 
 function AuthCallbackContent() {
@@ -22,11 +21,10 @@ function AuthCallbackContent() {
   const [authData, setAuthData] = useState<AuthCallbackData>({
     authStatus: null,
     userId: null,
-    userName: null,
-    userEmail: null,
   });
   const [countdown, setCountdown] = useState(5);
   const [errorMessage, setErrorMessage] = useState("");
+  const {} = useAuth();
 
   // Map backend error codes to user-friendly messages
   const getErrorMessage = (errorCode: string | null): string => {
@@ -71,8 +69,6 @@ function AuthCallbackContent() {
     const error = searchParams.get("error");
     const jwtToken = searchParams.get("jwtToken");
     const userId = searchParams.get("userId");
-    const userName = searchParams.get("userName");
-    const userEmail = searchParams.get("userEmail");
 
     if (
       (authStatus === "login_success" || authStatus === "signup_success") &&
@@ -82,8 +78,6 @@ function AuthCallbackContent() {
       setAuthData({
         authStatus,
         userId,
-        userName,
-        userEmail,
       });
 
       // Store JWT token in localStorage or context
@@ -120,6 +114,10 @@ function AuthCallbackContent() {
       router.push("/dashboard?userId=" + authData.userId);
     }
   }, [countdown, status, router, authData.userId]);
+
+  useEffect(() => {
+    console.log("Auth Data:", authData);
+  }, [authData]);
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-8">

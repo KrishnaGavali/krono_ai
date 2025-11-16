@@ -1,7 +1,9 @@
 import { Client, Users, Databases } from 'node-appwrite';
 import handleGoogleAuth from './handlers/googleAuth.js';
 import handleGoogleAuthCallback from './handlers/googleAuthCallback.js';
-import { FrontendConfig } from './env.js';
+import { FrontendConfig, JwtConfig } from './env.js';
+import AppwriteUsersDBService from './service/appwriteUsersDB.js';
+import JwtService from './service/jwtService.js';
 
 // Helper function to build redirect URL with query parameters
 const buildRedirectUrl = (baseUrl, params) => {
@@ -16,7 +18,11 @@ const buildRedirectUrl = (baseUrl, params) => {
 
 // This Appwrite function will be executed every time your function is triggered
 export default async ({ req, res, log, error }) => {
-  const allowedEndpoints = ['/auth/google', '/auth/google/callback'];
+  const allowedEndpoints = [
+    '/auth/google',
+    '/auth/google/callback',
+    '/auth/get_user_details',
+  ];
 
   if (!allowedEndpoints.includes(req.path)) {
     const redirectUrl = buildRedirectUrl(FrontendConfig.errorUrl, {
@@ -80,6 +86,62 @@ export default async ({ req, res, log, error }) => {
       });
 
       return res.redirect(redirectUrl, 302);
+    }
+
+    if (req.path === '/auth/get_user_details') {
+      const { userId, jwtToken } = req.query;
+
+      // Validate input
+      if (!userId || !jwtToken) {
+        return res.json(
+          {
+            error: 'missing_parameters',
+            message: 'userId and jwtToken are required',
+          },
+          400
+        );
+      }
+
+      const userDBService = new AppwriteUsersDBService();
+      const jwtService = new JwtService();
+
+      const secret = JwtConfig.secret;
+
+      // Verify JWT token
+      let payload;
+
+      try {
+        payload = jwtService.verifyToken(jwtToken, secret);
+
+        // Check if token userId matches requested userId
+        if (payload.userId !== userId) {
+          return res.json(
+            {
+              error: 'unauthorized',
+              message: 'Token userId does not match requested userId',
+            },
+            401
+          );
+        }
+
+        // Fetch user details from Appwrite
+        const userDetails = await userDBService.getBasicUserDetailsById(userId);
+
+        return res.json(
+          {
+            user: userDetails,
+          },
+          200
+        );
+      } catch (err) {
+        return res.json(
+          {
+            error: 'unexpected_token_error',
+            message: 'JWT token verification failed: ' + err.message,
+          },
+          401
+        );
+      }
     }
   } catch (err) {
     error('Unexpected error in auth endpoint: ' + err.message);

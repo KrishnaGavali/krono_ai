@@ -35,6 +35,21 @@ class AppwriteUsersDBService {
       throw new Error('Error creating new user: ' + error.message);
     }
   }
+
+  async getBasicUserDetailsById(userId) {
+    try {
+      const userRes = await this.databases.getRow({
+        databaseId: AppwriteConfig.databaseId,
+        tableId: AppwriteConfig.usersTableId,
+        rowId: userId,
+        queries: [Query.select(['name', 'email', 'profile_url'])],
+      });
+
+      return userRes;
+    } catch (error) {
+      throw new Error('Error fetching user details: ' + error.message);
+    }
+  }
 }
 
 export default AppwriteUsersDBService;
