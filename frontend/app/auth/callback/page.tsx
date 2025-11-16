@@ -155,15 +155,6 @@ function AuthCallbackContent() {
                     ? "Welcome! Account Created"
                     : "Welcome Back!"}
                 </p>
-                <p className="text-sm text-muted-foreground">
-                  {authData.authStatus === "signup_success"
-                    ? `Your account has been created successfully, ${
-                        authData.userName || ""
-                      }!`
-                    : `You have been successfully logged in, ${
-                        authData.userName || ""
-                      }!`}
-                </p>
               </div>
 
               {/* Countdown Timer */}
