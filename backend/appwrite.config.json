@@ -1,0 +1,149 @@
+{
+  "projectId": "68d9409a002dbc77e02b",
+  "endpoint": "https://fra.cloud.appwrite.io/v1",
+  "projectName": "KronoAI",
+  "settings": {
+    "services": {
+      "account": true,
+      "avatars": true,
+      "databases": true,
+      "locale": true,
+      "health": true,
+      "storage": true,
+      "teams": true,
+      "users": true,
+      "sites": true,
+      "functions": true,
+      "graphql": true,
+      "messaging": true
+    },
+    "auth": {
+      "methods": {
+        "jwt": false,
+        "phone": false,
+        "invites": false,
+        "anonymous": false,
+        "email-otp": false,
+        "magic-url": false,
+        "email-password": true
+      },
+      "security": {
+        "duration": 31536000,
+        "limit": 0,
+        "sessionsLimit": 10,
+        "passwordHistory": 0,
+        "passwordDictionary": false,
+        "personalDataCheck": false,
+        "sessionAlerts": false,
+        "mockNumbers": []
+      }
+    }
+  },
+  "tablesDB": [
+    {
+      "$id": "690c01f40007359146fe",
+      "name": "MainDB",
+      "enabled": true
+    }
+  ],
+  "tables": [
+    {
+      "$id": "users",
+      "$permissions": [],
+      "databaseId": "690c01f40007359146fe",
+      "name": "Users",
+      "enabled": true,
+      "rowSecurity": false,
+      "columns": [
+        {
+          "key": "email",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 320,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "profile_url",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 5000,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "access_token",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 5000,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "refresh_token",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 5000,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "name",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "phone",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 16,
+          "default": "NA",
+          "encrypt": false
+        }
+      ],
+      "indexes": [
+        {
+          "key": "index_2",
+          "type": "unique",
+          "status": "available",
+          "columns": ["email"],
+          "orders": ["ASC"]
+        },
+        {
+          "key": "index_4",
+          "type": "unique",
+          "status": "available",
+          "columns": ["phone"],
+          "orders": ["ASC"]
+        }
+      ]
+    }
+  ],
+  "functions": [
+    {
+      "$id": "69162916001e61cb188a",
+      "name": "Auth",
+      "runtime": "node-22",
+      "specification": "s-1vcpu-512mb",
+      "execute": ["any"],
+      "events": [],
+      "scopes": ["databases.read", "databases.write"],
+      "schedule": "",
+      "timeout": 15,
+      "enabled": true,
+      "logging": true,
+      "entrypoint": "src/main.js",
+      "commands": "npm install",
+      "path": "functions/Auth"
+    }
+  ]
+}

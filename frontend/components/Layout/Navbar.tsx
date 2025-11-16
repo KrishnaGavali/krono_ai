@@ -19,6 +19,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 
 interface MenuItem {
   title: string;
@@ -60,11 +61,18 @@ const Navbar = ({
   ],
 }: Navbar1Props) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   const handleLogin = () => {
     // Redirect to Google OAuth login
     window.location.href = "http://localhost:3001/auth/google";
   };
+
+  const nonAllowedRoutes = ["/auth/callback"];
+
+  if (nonAllowedRoutes.includes(pathname)) {
+    return null;
+  }
 
   return (
     <section className="py-4 flex items-center justify-center bg-background/80 backdrop-blur-md border-b border-border fixed w-full top-0 z-50 supports-[backdrop-filter]:bg-background/60 h-20">

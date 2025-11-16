@@ -58,7 +58,7 @@ const Hero = ({
   },
 }: Hero7Props) => {
   const googleLogin = async () => {
-    window.location.href = "http://localhost:3001/auth/google";
+    window.location.href = "http://localhost:3000/auth/google";
   };
 
   return (
