@@ -65,7 +65,8 @@ const Navbar = ({
 
   const handleLogin = () => {
     // Redirect to Google OAuth login
-    window.location.href = "http://localhost:3001/auth/google";
+    window.location.href =
+      "https://69196730003ac7b39c9f.fra.appwrite.run/auth/google";
   };
 
   const nonAllowedRoutes = ["/auth/callback"];
