@@ -19,11 +19,24 @@ const JwtConfig = {
 
 const FrontendConfig = {
   callbackUrl:
-    process.env.FRONTEND_CALLBACK_URL ||
-    'https://krono-ai.vercel.app/auth/callback',
-  errorUrl:
-    process.env.FRONTEND_ERROR_URL ||
-    'https://krono-ai.vercel.app/auth/callback',
+    process.env.FRONTEND_CALLBACK_URL || 'http://localhost:3000/auth/callback',
 };
 
-export { googleConfig, AppwriteConfig, JwtConfig, FrontendConfig };
+const FrontendConfigLocal = {
+  callbackUrl: 'http://localhost:3000/auth/callback',
+};
+
+const ENV = process.env.NODE_ENV || 'dev';
+
+if (ENV === 'dev') {
+  FrontendConfig.callbackUrl = FrontendConfigLocal.callbackUrl;
+}
+
+export {
+  googleConfig,
+  AppwriteConfig,
+  JwtConfig,
+  FrontendConfig,
+  FrontendConfigLocal,
+  ENV,
+};

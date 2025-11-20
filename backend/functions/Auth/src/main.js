@@ -16,16 +16,29 @@ const buildRedirectUrl = (baseUrl, params) => {
   return url.toString();
 };
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  'Access-Control-Max-Age': '86400',
+};
+
 // This Appwrite function will be executed every time your function is triggered
 export default async ({ req, res, log, error }) => {
+  if (req.method === 'OPTIONS') {
+    return res.send('', 204, corsHeaders);
+  }
+
   const allowedEndpoints = [
     '/auth/google',
     '/auth/google/callback',
     '/auth/get_user_details',
   ];
 
+  log('Received request for path: ' + req.path);
+
   if (!allowedEndpoints.includes(req.path)) {
-    const redirectUrl = buildRedirectUrl(FrontendConfig.errorUrl, {
+    const redirectUrl = buildRedirectUrl(FrontendConfig.callbackUrl, {
       error: 'forbidden',
       message: 'Endpoint not allowed',
     });
@@ -37,7 +50,7 @@ export default async ({ req, res, log, error }) => {
       const authURI = handleGoogleAuth();
 
       if (!authURI || !authURI.url) {
-        const redirectUrl = buildRedirectUrl(FrontendConfig.errorUrl, {
+        const redirectUrl = buildRedirectUrl(FrontendConfig.callbackUrl, {
           error: 'auth_init_failed',
           message: 'Failed to initialize Google authentication',
         });
@@ -50,7 +63,7 @@ export default async ({ req, res, log, error }) => {
     if (req.path === '/auth/google/callback') {
       // Check for access denied
       if (req.query.error === 'access_denied') {
-        const redirectUrl = buildRedirectUrl(FrontendConfig.errorUrl, {
+        const redirectUrl = buildRedirectUrl(FrontendConfig.callbackUrl, {
           error: 'access_denied',
           message: 'User denied access to Google account',
         });
@@ -59,7 +72,7 @@ export default async ({ req, res, log, error }) => {
 
       // Validate authorization code
       if (!req.query.code) {
-        const redirectUrl = buildRedirectUrl(FrontendConfig.errorUrl, {
+        const redirectUrl = buildRedirectUrl(FrontendConfig.callbackUrl, {
           error: 'missing_code',
           message: 'Authorization code is missing',
         });
@@ -71,7 +84,7 @@ export default async ({ req, res, log, error }) => {
 
       // Handle authentication errors
       if (data.error) {
-        const redirectUrl = buildRedirectUrl(FrontendConfig.errorUrl, {
+        const redirectUrl = buildRedirectUrl(FrontendConfig.callbackUrl, {
           error: data.error,
           message: data.message,
         });
@@ -146,7 +159,7 @@ export default async ({ req, res, log, error }) => {
   } catch (err) {
     error('Unexpected error in auth endpoint: ' + err.message);
 
-    const redirectUrl = buildRedirectUrl(FrontendConfig.errorUrl, {
+    const redirectUrl = buildRedirectUrl(FrontendConfig.callbackUrl, {
       error: 'internal_server_error',
       message: 'An unexpected error occurred',
       errorDetails:

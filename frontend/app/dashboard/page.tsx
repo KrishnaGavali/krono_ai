@@ -23,7 +23,7 @@ const UserDashboard = () => {
 
   return (
     <div>
-      {jwtToken} {userId}
+      
     </div>
   );
 };

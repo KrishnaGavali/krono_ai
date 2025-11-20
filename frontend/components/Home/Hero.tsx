@@ -58,6 +58,13 @@ const Hero = ({
   },
 }: Hero7Props) => {
   const googleLogin = async () => {
+    const env = process.env.NEXT_PUBLIC_ENVIRONMENT;
+
+    if (env === "dev") {
+      window.location.href = "http://localhost:3001/auth/google";
+      return;
+    }
+
     window.location.href =
       "https://69196730003ac7b39c9f.fra.appwrite.run/auth/google";
   };

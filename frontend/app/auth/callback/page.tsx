@@ -12,7 +12,7 @@ interface AuthCallbackData {
   userId: string | null;
 }
 
-function AuthCallbackContent() {
+const AuthCallbackContent = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [status, setStatus] = useState<"loading" | "success" | "error">(
@@ -24,7 +24,7 @@ function AuthCallbackContent() {
   });
   const [countdown, setCountdown] = useState(5);
   const [errorMessage, setErrorMessage] = useState("");
-  const {} = useAuth();
+  const { login } = useAuth();
 
   // Map backend error codes to user-friendly messages
   const getErrorMessage = (errorCode: string | null): string => {
@@ -98,6 +98,38 @@ function AuthCallbackContent() {
       setErrorMessage("Invalid authentication request.");
     }
   }, [searchParams]);
+
+  useEffect(() => {
+    if (authData.authStatus && authData.userId) {
+      // Simulate fetching user data and logging in
+      const fetchUserDataAndLogin = async () => {
+        try {
+          // Simulated user data fetch
+          const userDataRes = await fetch(
+            `http://localhost:3001/auth/get_user_data?userId=${
+              authData.userId
+            }&jwtToken=${localStorage.getItem("jwtToken")}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                "X-Appwrite-Project": "68d9409a002dbc77e02b",
+              },
+            }
+          );
+
+          if (userDataRes.ok) {
+            const userData = await userDataRes.json();
+            login(userData);
+          }
+        } catch (error) {
+          console.error("Error during user login:", error);
+        }
+      };
+
+      fetchUserDataAndLogin();
+    }
+  }, [authData, login]);
 
   useEffect(() => {
     if (status === "success") {
@@ -215,7 +247,7 @@ function AuthCallbackContent() {
       </Card>
     </div>
   );
-}
+};
 
 // Loading fallback component
 function AuthCallbackLoading() {
