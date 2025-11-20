@@ -50,8 +50,8 @@ const Navbar = ({
   logo = {
     url: "/",
     src: "",
-    alt: "Krono AI Logo",
-    title: "Krono AI",
+    alt: "TimelyAI Logo",
+    title: "TimelyAI",
   },
   menu = [
     { title: "Home", url: "#" },

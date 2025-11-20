@@ -24,7 +24,7 @@ interface FooterProps {
 
 const Footer = ({
   logo = {
-    title: "Krono AI",
+    title: "TimelyAI",
     url: "#",
   },
   tagline = "Voice-first time management for modern professionals",

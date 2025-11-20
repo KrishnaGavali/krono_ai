@@ -25,7 +25,7 @@ interface Hero7Props {
 
 const Hero = ({
   heading = "Chat with your Calendar Plan your Day.",
-  description = "Krono AI is the voice-first productivity platform that captures your tasks, and appointments from WhatsApp and automatically organizes them using AI-powered triage.",
+  description = "TimelyAI is the voice-first productivity platform that captures your tasks, and appointments from WhatsApp and automatically organizes them using AI-powered triage.",
   button = {
     text: "Create Account with Google",
     url: "#get-started",
