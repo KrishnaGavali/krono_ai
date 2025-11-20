@@ -1,5 +1,5 @@
 "use client";
-import { Calendar, Menu } from "lucide-react";
+import { Calendar, Menu, LogOut } from "lucide-react";
 
 import {
   Accordion,
@@ -18,8 +18,16 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 interface MenuItem {
   title: string;
@@ -62,11 +70,24 @@ const Navbar = ({
 }: Navbar1Props) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const { isAuth, user, logout } = useAuth();
 
   const handleLogin = () => {
     // Redirect to Google OAuth login
     window.location.href =
       "https://69196730003ac7b39c9f.fra.appwrite.run/auth/google";
+  };
+
+  const handleLogout = () => {
+    logout();
+  };
+
+  const getInitials = (name: string) => {
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase();
   };
 
   const nonAllowedRoutes = ["/auth/callback"];
@@ -103,15 +124,40 @@ const Navbar = ({
           {/* Theme + Auth */}
           <div className="flex items-center gap-3">
             <ThemeSwitcher />
-            <Button variant={"default"}>
-              <div
-                className=" flex items-center hover:cursor-pointer"
-                onClick={handleLogin}
-              >
-                <GoogleIcon className="h-4 w-4 mr-2" />
-                Login with Google
-              </div>
-            </Button>
+            {isAuth && user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage src={user.profilePic} alt={user.name} />
+                      <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
+                    </Avatar>
+                    <span className="text-sm font-medium">{user.name}</span>
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem disabled>
+                    <span className="text-xs text-muted-foreground">
+                      {user.email}
+                    </span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleLogout}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button variant={"default"}>
+                <div
+                  className=" flex items-center hover:cursor-pointer"
+                  onClick={handleLogin}
+                >
+                  <GoogleIcon className="h-4 w-4 mr-2" />
+                  Login with Google
+                </div>
+              </Button>
+            )}
           </div>
         </nav>
 
@@ -154,15 +200,42 @@ const Navbar = ({
               </Accordion>
 
               <div className="flex flex-col gap-3">
-                <Button variant={"default"}>
-                  <div
-                    className=" flex items-center hover:cursor-pointer"
-                    onClick={handleLogin}
-                  >
-                    <GoogleIcon className="h-4 w-4 mr-2" />
-                    Login with Google
+                {isAuth && user ? (
+                  <div className="flex flex-col gap-3">
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-md bg-muted">
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage src={user.profilePic} alt={user.name} />
+                        <AvatarFallback>
+                          {getInitials(user.name)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex flex-col">
+                        <span className="text-sm font-medium">{user.name}</span>
+                        <span className="text-xs text-muted-foreground">
+                          {user.email}
+                        </span>
+                      </div>
+                    </div>
+                    <Button
+                      variant={"outline"}
+                      onClick={handleLogout}
+                      className="w-full"
+                    >
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Logout
+                    </Button>
                   </div>
-                </Button>
+                ) : (
+                  <Button variant={"default"}>
+                    <div
+                      className=" flex items-center hover:cursor-pointer"
+                      onClick={handleLogin}
+                    >
+                      <GoogleIcon className="h-4 w-4 mr-2" />
+                      Login with Google
+                    </div>
+                  </Button>
+                )}
               </div>
             </div>
           )}

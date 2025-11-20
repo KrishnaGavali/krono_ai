@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
+import { id } from "date-fns/locale";
 
 interface AuthCallbackData {
   authStatus: "login_success" | "signup_success" | null;
@@ -104,23 +105,40 @@ const AuthCallbackContent = () => {
       // Simulate fetching user data and logging in
       const fetchUserDataAndLogin = async () => {
         try {
+          const userId = authData.userId;
+          const jwtToken = localStorage.getItem("jwtToken");
+
+          if (!userId || !jwtToken) {
+            throw new Error(
+              "Missing userId or jwtToken for fetching user data"
+            );
+          }
+
           // Simulated user data fetch
           const userDataRes = await fetch(
-            `http://localhost:3001/auth/get_user_data?userId=${
+            `http://localhost:3001/auth/get_user_details?userId=${
               authData.userId
             }&jwtToken=${localStorage.getItem("jwtToken")}`,
             {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",
-                "X-Appwrite-Project": "68d9409a002dbc77e02b",
               },
             }
           );
 
           if (userDataRes.ok) {
             const userData = await userDataRes.json();
-            login(userData);
+            console.log("Fetched User Data:", userData);
+
+            const userDataObj = {
+              id: userData.user.$id,
+              name: userData.user.name,
+              email: userData.user.email,
+              profilePic: userData.user.profile_url,
+            };
+
+            login(userDataObj);
           }
         } catch (error) {
           console.error("Error during user login:", error);
@@ -129,7 +147,7 @@ const AuthCallbackContent = () => {
 
       fetchUserDataAndLogin();
     }
-  }, [authData, login]);
+  }, [authData]);
 
   useEffect(() => {
     if (status === "success") {

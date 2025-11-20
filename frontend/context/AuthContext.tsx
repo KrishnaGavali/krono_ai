@@ -27,6 +27,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const [user, setUser] = useState<User | null>(null);
 
   const login = (userData: User) => {
+    console.log("Logging in user:", userData);
     setUser(userData);
     setIsAuth(true);
   };

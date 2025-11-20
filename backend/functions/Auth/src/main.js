@@ -17,9 +17,11 @@ const buildRedirectUrl = (baseUrl, params) => {
 };
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': 'http://localhost:3000',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  'Access-Control-Allow-Headers':
+    'Content-Type, Authorization, x-appwrite-project, x-requested-with',
+  'Access-Control-Allow-Credentials': 'true',
   'Access-Control-Max-Age': '86400',
 };
 
@@ -111,7 +113,8 @@ export default async ({ req, res, log, error }) => {
             error: 'missing_parameters',
             message: 'userId and jwtToken are required',
           },
-          400
+          400,
+          corsHeaders
         );
       }
 
@@ -133,7 +136,8 @@ export default async ({ req, res, log, error }) => {
               error: 'unauthorized',
               message: 'Token userId does not match requested userId',
             },
-            401
+            401,
+            corsHeaders
           );
         }
 
@@ -142,9 +146,11 @@ export default async ({ req, res, log, error }) => {
 
         return res.json(
           {
+            status: 'success',
             user: userDetails,
           },
-          200
+          200,
+          corsHeaders
         );
       } catch (err) {
         return res.json(
@@ -152,7 +158,8 @@ export default async ({ req, res, log, error }) => {
             error: 'unexpected_token_error',
             message: 'JWT token verification failed: ' + err.message,
           },
-          401
+          401,
+          corsHeaders
         );
       }
     }
