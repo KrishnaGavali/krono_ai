@@ -128,11 +128,11 @@ const Navbar = ({
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                    <span className="text-sm font-medium">{user.name}</span>
                     <Avatar className="h-8 w-8">
                       <AvatarImage src={user.profilePic} alt={user.name} />
                       <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
                     </Avatar>
-                    <span className="text-sm font-medium">{user.name}</span>
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
