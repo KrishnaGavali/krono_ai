@@ -25,7 +25,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 
@@ -141,8 +141,11 @@ const Navbar = ({
                       {user.email}
                     </span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={handleLogout}>
-                    <LogOut className="mr-2 h-4 w-4" />
+                  <DropdownMenuItem
+                    onClick={handleLogout}
+                    className="bg-destructive text-white hover:bg-destructive/90 focus:bg-destructive/90"
+                  >
+                    <LogOut className="mr-2 h-4 w-4 text-white" />
                     Logout
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -217,7 +220,7 @@ const Navbar = ({
                       </div>
                     </div>
                     <Button
-                      variant={"outline"}
+                      variant={"destructive"}
                       onClick={handleLogout}
                       className="w-full"
                     >

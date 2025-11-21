@@ -35,6 +35,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const logout = () => {
     setUser(null);
     setIsAuth(false);
+    localStorage.removeItem("jwtToken_timely");
+    localStorage.removeItem("userId_timely");
+    window.location.href = "/";
   };
 
   return (

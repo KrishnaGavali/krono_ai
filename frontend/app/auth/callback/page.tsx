@@ -5,8 +5,6 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
-import { useAuth } from "@/context/AuthContext";
-import { id } from "date-fns/locale";
 
 interface AuthCallbackData {
   authStatus: "login_success" | "signup_success" | null;
@@ -25,7 +23,6 @@ const AuthCallbackContent = () => {
   });
   const [countdown, setCountdown] = useState(5);
   const [errorMessage, setErrorMessage] = useState("");
-  const { login } = useAuth();
 
   // Map backend error codes to user-friendly messages
   const getErrorMessage = (errorCode: string | null): string => {
@@ -83,8 +80,8 @@ const AuthCallbackContent = () => {
 
       // Store JWT token in localStorage or context
       if (typeof window !== "undefined") {
-        localStorage.setItem("jwtToken", jwtToken);
-        if (userId) localStorage.setItem("userId", userId);
+        localStorage.setItem("jwtToken_timely", jwtToken);
+        if (userId) localStorage.setItem("userId_timely", userId);
       }
 
       // Simulate authentication processing
@@ -99,55 +96,6 @@ const AuthCallbackContent = () => {
       setErrorMessage("Invalid authentication request.");
     }
   }, [searchParams]);
-
-  useEffect(() => {
-    if (authData.authStatus && authData.userId) {
-      // Simulate fetching user data and logging in
-      const fetchUserDataAndLogin = async () => {
-        try {
-          const userId = authData.userId;
-          const jwtToken = localStorage.getItem("jwtToken");
-
-          if (!userId || !jwtToken) {
-            throw new Error(
-              "Missing userId or jwtToken for fetching user data"
-            );
-          }
-
-          // Simulated user data fetch
-          const userDataRes = await fetch(
-            `http://localhost:3001/auth/get_user_details?userId=${
-              authData.userId
-            }&jwtToken=${localStorage.getItem("jwtToken")}`,
-            {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
-
-          if (userDataRes.ok) {
-            const userData = await userDataRes.json();
-            console.log("Fetched User Data:", userData);
-
-            const userDataObj = {
-              id: userData.user.$id,
-              name: userData.user.name,
-              email: userData.user.email,
-              profilePic: userData.user.profile_url,
-            };
-
-            login(userDataObj);
-          }
-        } catch (error) {
-          console.error("Error during user login:", error);
-        }
-      };
-
-      fetchUserDataAndLogin();
-    }
-  }, [authData]);
 
   useEffect(() => {
     if (status === "success") {
