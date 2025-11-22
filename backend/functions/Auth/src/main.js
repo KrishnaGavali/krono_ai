@@ -35,6 +35,7 @@ export default async ({ req, res, log, error }) => {
     '/auth/google',
     '/auth/google/callback',
     '/auth/get_user_details',
+    '/auth/phone/auth_code',
   ];
 
   log('Received request for path: ' + req.path);

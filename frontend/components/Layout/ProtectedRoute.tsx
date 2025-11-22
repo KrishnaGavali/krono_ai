@@ -36,6 +36,8 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
             name: userData.user.name,
             email: userData.user.email,
             profilePic: userData.user.profile_url,
+            phone: userData.user.phone,
+            isPhoneConnected: userData.user.is_phone_connected,
           };
 
           login(userDataObj);

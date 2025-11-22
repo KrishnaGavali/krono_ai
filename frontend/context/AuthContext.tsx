@@ -7,6 +7,8 @@ interface User {
   name: string;
   email: string;
   profilePic: string;
+  phone: string | null;
+  isPhoneConnected: boolean;
 }
 
 interface AuthContextType {

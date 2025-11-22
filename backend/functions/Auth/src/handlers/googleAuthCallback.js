@@ -94,11 +94,6 @@ const handleGoogleAuthCallback = async (code) => {
       };
     }
 
-    // USER DOESN'T EXIST - CREATE NEW USER
-    const randomPhoneNumber = Math.floor(
-      1000000000 + Math.random() * 9000000000
-    ).toString();
-
     const newUserData = {
       google_id: userInfo.id,
       name: userInfo.name,
@@ -106,7 +101,7 @@ const handleGoogleAuthCallback = async (code) => {
       profile_url: userInfo.picture,
       refresh_token: tokens.refresh_token,
       access_token: tokens.access_token,
-      phone: randomPhoneNumber,
+      phone: null,
     };
 
     const newUserRes = await appwriteUserService.createNewUser(

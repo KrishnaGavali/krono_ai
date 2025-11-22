@@ -51,7 +51,7 @@ export default function Dashboard() {
     // For now, toggle between states for testing
     const timer = setTimeout(() => {
       // Change this to determine the state
-      const isConnected = true; // Set to true to test CONNECTED state
+      const isConnected = false; // Set to true to test CONNECTED state
       setConnectionState(isConnected ? "connected" : "not_connected");
     }, 500);
 
@@ -69,7 +69,7 @@ export default function Dashboard() {
     return <LoadingState />;
   }
 
-  const isConnected = connectionState === "connected";
+  const isConnected = user?.isPhoneConnected === true;
 
   return (
     <main className=" bg-background flex flex-col overflow-hidden mt-20">

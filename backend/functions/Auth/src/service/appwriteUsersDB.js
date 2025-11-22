@@ -42,7 +42,15 @@ class AppwriteUsersDBService {
         databaseId: AppwriteConfig.databaseId,
         tableId: AppwriteConfig.usersTableId,
         rowId: userId,
-        queries: [Query.select(['name', 'email', 'profile_url'])],
+        queries: [
+          Query.select([
+            'name',
+            'email',
+            'profile_url',
+            'phone',
+            'is_phone_connected',
+          ]),
+        ],
       });
 
       return userRes;
