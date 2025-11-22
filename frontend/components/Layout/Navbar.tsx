@@ -72,6 +72,8 @@ const Navbar = ({
   const pathname = usePathname();
   const { isAuth, user, logout } = useAuth();
 
+  console.log("User in Navbar:", user?.profilePic);
+
   const handleLogin = () => {
     // Redirect to Google OAuth login
     window.location.href =
