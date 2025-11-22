@@ -1,4 +1,4 @@
-import { phoneAuthRedis } from '../service/phoneAuthRedis.js';
+import phoneAuthRedis from '../service/phoneAuthRedis.js';
 
 const generateRamdomCode = (length = 6) => {
   const characters = '0123456789';
@@ -10,18 +10,23 @@ const generateRamdomCode = (length = 6) => {
   return result;
 };
 
-const createPhoneAuthCodeAndSession = async ({ name, userId }) => {
+const createPhoneAuthCodeAndSession = async ({ name, userId, phone }) => {
   const phoneAuthRedisService = new phoneAuthRedis();
 
   const code = generateRamdomCode(6);
 
   try {
-    await phoneAuthRedisService.createAuthSession(code, userId, name);
+    const createdAuthSession = await phoneAuthRedisService.createAuthSession(
+      code,
+      userId,
+      name,
+      phone
+    );
 
     return {
       status: 200,
       message: 'Phone auth code created successfully',
-      code,
+      code: createdAuthSession.code,
     };
   } catch (error) {
     return {

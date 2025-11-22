@@ -8,19 +8,38 @@ class phoneAuthRedis {
   async createAuthSession(code, userId, name) {
     try {
       const sessionData = {
-        userId: userId,
+        code: code,
         name: name,
+        userId: userId,
       };
 
-      const session_key = `phone_auth_code:${code}`;
+      const session_key = `phone_auth_code:${userId}`;
+
+      // check if session already exists
+      const existingSession = await this.redisClient.get(session_key);
+      if (existingSession) {
+        return {
+          status: 'exists',
+          message: 'Auth session already exists',
+          code: existingSession.code,
+        };
+      }
 
       await this.redisClient.set(session_key, JSON.stringify(sessionData), {
         ex: 600,
       });
 
-      return true;
+      return {
+        status: 'success',
+        message: 'Auth session created successfully',
+        code: code,
+      };
     } catch (error) {
-      throw new Error('Error creating auth session: ' + error.message);
+      console.error('Error creating auth session:', error);
+      return {
+        status: 'error',
+        message: 'Failed to create auth session: ' + error.message,
+      };
     }
   }
 

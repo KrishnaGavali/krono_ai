@@ -168,14 +168,14 @@ export default async ({ req, res, log, error }) => {
     }
 
     if (req.path === '/auth/phone/auth_code') {
-      const { name, userId } = req.query;
+      const { name, userId, jwtToken } = req.query;
 
       // Validate input
-      if (!name || !userId) {
+      if (!name || !userId || !jwtToken) {
         return res.json(
           {
             error: 'missing_parameters',
-            message: 'name and userId are required',
+            message: 'name, userId, phone, and jwtToken are required',
           },
           400,
           corsHeaders
@@ -183,7 +183,43 @@ export default async ({ req, res, log, error }) => {
       }
 
       try {
-        const resData = createPhoneAuthCodeAndSession({ name, userId });
+        // Verify JWT token
+        const jwtService = new JwtService();
+        const secret = JwtConfig.secret;
+
+        let payload;
+        try {
+          payload = jwtService.verifyToken(jwtToken, secret);
+
+          // Check if token userId matches requested userId
+          if (payload.userId !== userId) {
+            return res.json(
+              {
+                error: 'unauthorized',
+                message: 'Token userId does not match requested userId',
+              },
+              401,
+              corsHeaders
+            );
+          }
+        } catch (tokenError) {
+          return res.json(
+            {
+              error: 'invalid_token',
+              message: 'JWT token verification failed: ' + tokenError.message,
+            },
+            401,
+            corsHeaders
+          );
+        }
+
+        // Create phone auth code and session
+        const resData = await createPhoneAuthCodeAndSession({
+          name,
+          userId,
+        });
+
+        console.log('Phone auth code creation response:', resData);
 
         return res.json(resData, resData.status, corsHeaders);
       } catch (error) {

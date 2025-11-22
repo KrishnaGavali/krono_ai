@@ -2,15 +2,14 @@
 import React, { useState } from "react";
 import { Copy, Check, MessageCircle, Zap, ArrowRight } from "lucide-react";
 import { Button } from "../ui/button";
+import { useAuth } from "@/context/AuthContext";
 
 interface NotConnectedCardProps {
-  authCode: string;
   onCopy: () => void;
   copied: boolean;
 }
 
 export const NotConnectedCard: React.FC<NotConnectedCardProps> = ({
-  authCode,
   onCopy,
   copied,
 }) => {
@@ -20,14 +19,36 @@ export const NotConnectedCard: React.FC<NotConnectedCardProps> = ({
 
   const [showCode, setShowCode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const { user } = useAuth();
+  const [authCode, setAuthCode] = useState(null);
 
   const handleGetandShowCode = async () => {
     setIsLoading(true);
     try {
-      // Simulate fetching the code with a delay
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      //fetch the Code from API
-      //boom code fetched
+      const jwtToken = localStorage.getItem("jwtToken_timely");
+
+      if (!jwtToken) {
+        throw new Error("User is not authenticated");
+      }
+
+      const res = await fetch(
+        `http://localhost:3001/auth/phone/auth_code?userId=${user?.id}&name=${user?.name}&jwtToken=${jwtToken}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch auth code");
+      }
+
+      const data = await res.json();
+      console.log("Fetched auth code:", data);
+      setAuthCode(data.code);
+
       setShowCode(true);
     } catch (error) {
       console.error("Failed to fetch code:", error);

@@ -81,11 +81,7 @@ export default function Dashboard() {
       {/* Main Content - Full Height */}
       <div className="flex-1 overflow-hidden">
         {connectionState === "not_connected" ? (
-          <NotConnectedCard
-            authCode={authCode}
-            onCopy={handleCopyCode}
-            copied={copied}
-          />
+          <NotConnectedCard onCopy={handleCopyCode} copied={copied} />
         ) : (
           <ConnectedCard
             connection={whatsappConnection}
