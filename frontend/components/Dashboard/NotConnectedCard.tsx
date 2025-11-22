@@ -1,5 +1,7 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import { Copy, Check, MessageCircle, Zap, ArrowRight } from "lucide-react";
+import { Button } from "../ui/button";
 
 interface NotConnectedCardProps {
   authCode: string;
@@ -14,6 +16,24 @@ export const NotConnectedCard: React.FC<NotConnectedCardProps> = ({
 }) => {
   const handleOpenWhatsApp = () => {
     window.open("https://wa.me/15551956479?text=Hi", "_blank");
+  };
+
+  const [showCode, setShowCode] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleGetandShowCode = async () => {
+    setIsLoading(true);
+    try {
+      // Simulate fetching the code with a delay
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      //fetch the Code from API
+      //boom code fetched
+      setShowCode(true);
+    } catch (error) {
+      console.error("Failed to fetch code:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -91,27 +111,54 @@ export const NotConnectedCard: React.FC<NotConnectedCardProps> = ({
               Your Authentication Code
             </label>
             <div className="group relative overflow-hidden rounded-xl border border-primary/30 bg-gradient-to-r from-primary/5 to-accent/5 p-1 mb-4">
-              <div className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-card rounded-[10px]">
-                <div className="flex-1 min-w-0">
-                  <code className="font-mono text-lg sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent break-words">
-                    {authCode}
-                  </code>
+              {isLoading ? (
+                // Loading State
+                <div className="flex items-center justify-center p-6 sm:p-8 bg-card rounded-[10px]">
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="relative w-12 h-12">
+                      <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-full opacity-20 blur animate-pulse"></div>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-8 h-8 border-3 border-transparent border-t-primary border-r-accent rounded-full animate-spin"></div>
+                      </div>
+                    </div>
+                    <p className="text-xs sm:text-sm text-muted-foreground font-medium">
+                      Generating your code...
+                    </p>
+                  </div>
                 </div>
-                <button
-                  onClick={onCopy}
-                  className="p-2 sm:p-3 hover:bg-muted rounded-lg transition-all duration-200 hover:scale-110 active:scale-95 flex-shrink-0"
-                  title="Copy code"
+              ) : showCode ? (
+                // Code Display State
+                <div className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-card rounded-[10px]">
+                  <div className="flex-1 min-w-0">
+                    <code className="font-mono text-lg sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent break-words">
+                      {authCode}
+                    </code>
+                  </div>
+                  <button
+                    onClick={onCopy}
+                    className="p-2 sm:p-3 hover:bg-muted rounded-lg transition-all duration-200 hover:scale-110 active:scale-95 flex-shrink-0"
+                    title="Copy code"
+                  >
+                    {copied ? (
+                      <Check size={18} className="text-accent" />
+                    ) : (
+                      <Copy
+                        size={18}
+                        className="text-muted-foreground group-hover:text-foreground"
+                      />
+                    )}
+                  </button>
+                </div>
+              ) : (
+                // Get Code Button State
+                <Button
+                  className="w-full"
+                  onClick={handleGetandShowCode}
+                  disabled={isLoading}
                 >
-                  {copied ? (
-                    <Check size={18} className="text-green-500" />
-                  ) : (
-                    <Copy
-                      size={18}
-                      className="text-muted-foreground group-hover:text-foreground"
-                    />
-                  )}
-                </button>
-              </div>
+                  Get Code
+                </Button>
+              )}
             </div>
             <p className="text-xs text-muted-foreground mb-4">
               {copied ? "✓ Copied to clipboard" : "Click to copy"}
