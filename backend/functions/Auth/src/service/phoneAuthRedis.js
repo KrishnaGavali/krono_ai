@@ -5,12 +5,11 @@ class phoneAuthRedis {
 
   constructor() {}
 
-  async createAuthSession(code, userId, name, phone) {
+  async createAuthSession(code, userId, name) {
     try {
       const sessionData = {
         userId: userId,
         name: name,
-        phone: phone,
       };
 
       const session_key = `phone_auth_code:${code}`;

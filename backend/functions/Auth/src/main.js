@@ -4,6 +4,7 @@ import handleGoogleAuthCallback from './handlers/googleAuthCallback.js';
 import { FrontendConfig, JwtConfig } from './env.js';
 import AppwriteUsersDBService from './service/appwriteUsersDB.js';
 import JwtService from './service/jwtService.js';
+import { createPhoneAuthCodeAndSession } from './handlers/handlePhoneAuth.js';
 
 // Helper function to build redirect URL with query parameters
 const buildRedirectUrl = (baseUrl, params) => {
@@ -36,6 +37,7 @@ export default async ({ req, res, log, error }) => {
     '/auth/google/callback',
     '/auth/get_user_details',
     '/auth/phone/auth_code',
+    '/auth/phone/verify_code',
   ];
 
   log('Received request for path: ' + req.path);
@@ -160,6 +162,37 @@ export default async ({ req, res, log, error }) => {
             message: 'JWT token verification failed: ' + err.message,
           },
           401,
+          corsHeaders
+        );
+      }
+    }
+
+    if (req.path === '/auth/phone/auth_code') {
+      const { name, userId } = req.query;
+
+      // Validate input
+      if (!name || !userId) {
+        return res.json(
+          {
+            error: 'missing_parameters',
+            message: 'name and userId are required',
+          },
+          400,
+          corsHeaders
+        );
+      }
+
+      try {
+        const resData = createPhoneAuthCodeAndSession({ name, userId });
+
+        return res.json(resData, resData.status, corsHeaders);
+      } catch (error) {
+        return res.json(
+          {
+            error: 'phone_auth_code_creation_failed',
+            message: 'Failed to create phone auth code: ' + error.message,
+          },
+          500,
           corsHeaders
         );
       }
