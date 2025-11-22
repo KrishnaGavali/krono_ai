@@ -8,6 +8,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@upstash/redis": "^1.35.6",
     "google-auth-library": "^10.5.0",
     "googleapis": "^166.0.0",
     "jsonwebtoken": "^9.0.2",
