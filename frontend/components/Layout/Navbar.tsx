@@ -59,7 +59,7 @@ const Navbar = ({
     url: "/",
     src: "",
     alt: "TimelyAI Logo",
-    title: "TimelyAI",
+    title: "Timely",
   },
   menu = [
     { title: "Home", url: "#" },
