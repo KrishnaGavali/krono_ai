@@ -18,7 +18,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
         // Simulated user data fetch
         const userDataRes = await fetch(
-          `http://localhost:3001/auth/get_user_details?userId=${userId}&jwtToken=${jwtToken}`,
+          `https://69196730003ac7b39c9f.fra.appwrite.run/auth/get_user_details?userId=${userId}&jwtToken=${jwtToken}`,
           {
             method: "GET",
             headers: {
