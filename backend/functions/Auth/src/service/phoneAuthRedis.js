@@ -13,10 +13,13 @@ class phoneAuthRedis {
         userId: userId,
       };
 
+      const pipeline = this.redisClient.pipeline();
+
       const session_key = `phone_auth_code:${userId}`;
+      const lookup_key = `phone_auth_code_lookup:${code}`;
 
       // check if session already exists
-      const existingSession = await this.redisClient.get(session_key);
+      const existingSession = await this.redisClient.get(lookup_key);
       if (existingSession) {
         return {
           status: 'exists',
@@ -25,9 +28,13 @@ class phoneAuthRedis {
         };
       }
 
-      await this.redisClient.set(session_key, JSON.stringify(sessionData), {
-        ex: 600,
-      });
+      pipeline.set(session_key, JSON.stringify(sessionData));
+      pipeline.set(lookup_key, JSON.stringify(sessionData));
+
+      pipeline.expire(session_key, 5 * 60); // 10 minutes
+      pipeline.expire(lookup_key, 5 * 60); // 10 minutes
+
+      await pipeline.exec();
 
       return {
         status: 'success',
