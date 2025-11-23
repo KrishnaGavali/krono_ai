@@ -10,7 +10,7 @@ const generateRamdomCode = (length = 6) => {
   return result;
 };
 
-const createPhoneAuthCodeAndSession = async ({ name, userId, phone }) => {
+const createPhoneAuthCodeAndSession = async ({ name, userId }) => {
   const phoneAuthRedisService = new phoneAuthRedis();
 
   const code = generateRamdomCode(6);
@@ -19,14 +19,13 @@ const createPhoneAuthCodeAndSession = async ({ name, userId, phone }) => {
     const createdAuthSession = await phoneAuthRedisService.createAuthSession(
       code,
       userId,
-      name,
-      phone
+      name
     );
 
     return {
       status: 200,
       message: 'Phone auth code created successfully',
-      code: createdAuthSession.code,
+      code,
     };
   } catch (error) {
     return {

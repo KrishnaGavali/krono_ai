@@ -1,4 +1,4 @@
-import { getClient } from '../providers/appwrite';
+import { getClient } from '../providers/appwrite.js';
 import { TablesDB, Query } from 'node-appwrite';
 
 class AppwriteUserDB {

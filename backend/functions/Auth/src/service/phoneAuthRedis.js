@@ -15,24 +15,27 @@ class phoneAuthRedis {
 
       const pipeline = this.redisClient.pipeline();
 
-      const session_key = `phone_auth_code:${userId}`;
-      const lookup_key = `phone_auth_code_lookup:${code}`;
+      // Key 1: By code (for WhatsApp webhook lookup)
+      const session_key = `phone_auth_code:${code}`;
+      // Key 2: By userId (for duplication checking)
+      const lookup_key = `phone_auth_code_lookup:${userId}`;
 
-      // check if session already exists
+      // Check if user already has a pending auth session (prevent duplicates)
       const existingSession = await this.redisClient.get(lookup_key);
       if (existingSession) {
         return {
           status: 'exists',
-          message: 'Auth session already exists',
-          code: existingSession.code,
+          message: 'Auth session already exists for this user',
+          code: JSON.parse(existingSession).code,
         };
       }
 
+      // Store both keys for dual-hash lookup
       pipeline.set(session_key, JSON.stringify(sessionData));
       pipeline.set(lookup_key, JSON.stringify(sessionData));
 
-      pipeline.expire(session_key, 5 * 60); // 10 minutes
-      pipeline.expire(lookup_key, 5 * 60); // 10 minutes
+      pipeline.expire(session_key, 5 * 60); // 5 minutes
+      pipeline.expire(lookup_key, 5 * 60); // 5 minutes
 
       await pipeline.exec();
 

@@ -10,8 +10,20 @@ const WEBHOOK_VERIFY_TOKEN =
   process.env.WHATSAPP_WEBHOOK_VERIFY_TOKEN || 'krono_ai_webhook_token';
 
 async function sendWhatsAppMessage({ to, message }) {
-  const token = process.env.WHATSAPP_TOKEN; // your access token
-  const phoneNumberId = '884351904753721'; // your WA phone number ID
+  const token = process.env.WHATSAPP_ACCESS_TOKEN; // your access token
+  const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID; // your WA phone number ID
+
+  if (!token) {
+    throw new Error(
+      'WHATSAPP_ACCESS_TOKEN is not set in environment variables'
+    );
+  }
+
+  if (!phoneNumberId) {
+    throw new Error(
+      'WHATSAPP_PHONE_NUMBER_ID is not set in environment variables'
+    );
+  }
 
   const url = `https://graph.facebook.com/v22.0/${phoneNumberId}/messages`;
 
@@ -56,10 +68,6 @@ export default async ({ req, res, log, error }) => {
       let challenge = req.query['hub.challenge'];
 
       challenge = parseInt(req.query['hub.challenge'], 10);
-
-      log(
-        `Verification request: mode=${mode}, token=${token}, challenge=${challenge}`
-      );
 
       if (mode === 'subscribe' && token === WEBHOOK_VERIFY_TOKEN) {
         // MUST return challenge as raw text (no JSON, no quotes)
@@ -106,8 +114,10 @@ export default async ({ req, res, log, error }) => {
 
                 // Step 2: Check if auth session exists in Redis
                 try {
-                  const sessionKey = `phone_auth_code:${authCode}`;
+                  const sessionKey = `phone_auth_code_lookup:${authCode}`;
                   const sessionData = await redis.get(sessionKey);
+
+                  log(`Session data from Redis: ${sessionData}`);
 
                   if (!sessionData) {
                     // Auth session expired or invalid
@@ -115,7 +125,8 @@ export default async ({ req, res, log, error }) => {
                     await sendWhatsAppMessage({
                       to: userPhone,
                       message:
-                        'Invalid or expired authentication code. Please generate a new code from the dashboard to continue.',
+                        'Invalid or expired authentication code. Please generate a new code from the dashboard to continue.' +
+                        sessionData,
                     });
                     return;
                   }
@@ -143,7 +154,8 @@ export default async ({ req, res, log, error }) => {
                   await sendWhatsAppMessage({
                     to: userPhone,
                     message:
-                      'An error occurred while verifying your code. Please try again or generate a new code from the dashboard.',
+                      'An error occurred while verifying your code. Please try again or generate a new code from the dashboard.' +
+                      redisError,
                   });
                 }
               } else {
