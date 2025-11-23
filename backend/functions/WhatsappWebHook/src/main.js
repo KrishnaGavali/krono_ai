@@ -3,8 +3,8 @@
  * Author: Krishna
  */
 
-import AppwriteUserDB from './service/UsersDB';
-import redis from './providers/redis';
+import AppwriteUserDB from './service/UsersDB.js';
+import redis from './providers/redis.js';
 
 const WEBHOOK_VERIFY_TOKEN =
   process.env.WHATSAPP_WEBHOOK_VERIFY_TOKEN || 'krono_ai_webhook_token';

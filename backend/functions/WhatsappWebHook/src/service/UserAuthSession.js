@@ -1,4 +1,4 @@
-import redis from '../providers/redis';
+import redis from '../providers/redis.js';
 
 class RedisAuthSession {
   constructor() {
