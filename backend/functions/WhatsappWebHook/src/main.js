@@ -114,7 +114,8 @@ export default async ({ req, res, log, error }) => {
                     log(`Invalid or expired auth code: ${authCode}`);
                     await sendWhatsAppMessage({
                       to: userPhone,
-                      message: 'Invalid or expired authentication code. Please generate a new code from the dashboard to continue.',
+                      message:
+                        'Invalid or expired authentication code. Please generate a new code from the dashboard to continue.',
                     });
                     return;
                   }
@@ -136,10 +137,13 @@ export default async ({ req, res, log, error }) => {
                     message: `Welcome ${session.name}! 🎉 Your WhatsApp has been successfully linked to TimelyAI. You can now manage your events and tasks via WhatsApp!`,
                   });
                 } catch (redisError) {
-                  log(`Redis error checking auth session: ${redisError.message}`);
+                  log(
+                    `Redis error checking auth session: ${redisError.message}`
+                  );
                   await sendWhatsAppMessage({
                     to: userPhone,
-                    message: 'An error occurred while verifying your code. Please try again or generate a new code from the dashboard.',
+                    message:
+                      'An error occurred while verifying your code. Please try again or generate a new code from the dashboard.',
                   });
                 }
               } else {
@@ -152,13 +156,15 @@ export default async ({ req, res, log, error }) => {
                   // User not connected
                   await sendWhatsAppMessage({
                     to: userPhone,
-                    message: "Hey! You aren't connected yet. Please generate an authorization code from the TimelyAI dashboard and send it in the format: Authorize:YOUR_CODE",
+                    message:
+                      "Hey! You aren't connected yet. Please generate an authorization code from the TimelyAI dashboard and send it in the format: Authorize:YOUR_CODE",
                   });
                 } else {
                   // User is connected - welcome back
                   await sendWhatsAppMessage({
                     to: userPhone,
-                    message: 'Welcome back! 👋 Please authorize before using TimelyAI. Generate an authorization code from the dashboard and send it here.',
+                    message:
+                      'Welcome back! 👋 Please authorize before using TimelyAI. Generate an authorization code from the dashboard and send it here.',
                   });
                 }
               }
