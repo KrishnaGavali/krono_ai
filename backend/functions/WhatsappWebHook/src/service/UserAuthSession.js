@@ -1,0 +1,22 @@
+import redis from '../providers/redis';
+
+class RedisAuthSession {
+  constructor() {
+    this.redisClient = redis;
+  }
+
+  async checkAuthSessionExists(code) {
+    try {
+      const lookup_key = `phone_auth_code_lookup:${code}`;
+      const sessionData = await this.redisClient.get(lookup_key);
+
+      if (sessionData) {
+        return sessionData;
+      } else {
+        return null;
+      }
+    } catch (error) {
+      throw new Error('Error checking auth session: ' + error.message);
+    }
+  }
+}
