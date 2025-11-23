@@ -32,7 +32,7 @@ export const NotConnectedCard: React.FC<NotConnectedCardProps> = ({
       }
 
       const res = await fetch(
-        `http://localhost:3001/auth/phone/auth_code?userId=${user?.id}&name=${user?.name}&jwtToken=${jwtToken}`,
+        `https://69196730003ac7b39c9f.fra.appwrite.run/auth/phone/auth_code?userId=${user?.id}&name=${user?.name}&jwtToken=${jwtToken}`,
         {
           method: "GET",
           headers: {
