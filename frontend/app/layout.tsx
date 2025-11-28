@@ -19,7 +19,7 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) { 
   return (
     <html lang="en" className=" md:overflow-y-scroll" suppressHydrationWarning>
       <body className={`${poppins.className} antialiased`}>
